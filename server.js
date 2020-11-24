@@ -3,6 +3,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const figlet = require("figlet");
+const cTable = require("console.table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -14,7 +15,7 @@ var connection = mysql.createConnection({
 
 figlet("Employee Manager", function (err, data) {
   if (err) {
-    console.log("Issue");
+    console.log("Something went wrong with figlet");
     console.dir(err);
     return;
   }
