@@ -13,6 +13,12 @@ var connection = mysql.createConnection({
   database: "top_songsDB",
 });
 
+connection.connect(function (err) {
+  if (err) throw err;
+  console.log("connected as id " + connection.threadId);
+  afterConnection();
+});
+
 figlet("Employee Manager", function (err, data) {
   if (err) {
     console.log("Something went wrong with figlet");
@@ -21,3 +27,11 @@ figlet("Employee Manager", function (err, data) {
   }
   console.log(data);
 });
+
+function promptUser() {
+  inquirer.prompt({
+    name: "action",
+    type: "list",
+    message: "What would you like to do?",
+  });
+}
