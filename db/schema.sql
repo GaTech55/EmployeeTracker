@@ -28,6 +28,6 @@ CREATE TABLE employee (
   PRIMARY KEY (id)
 );
 
-SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name FROM employee e
-JOIN role r ON r.id = e.role_id
-JOIN department d ON d.id = r.department_id;
+-- SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name FROM employee e
+-- JOIN role r ON r.id = e.role_id
+-- JOIN department d ON d.id = r.department_id;
