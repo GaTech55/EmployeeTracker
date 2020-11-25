@@ -69,7 +69,8 @@ function startQuery() {
           employeeUpdateManager();
           break;
         case "End of Query":
-          endQuery();
+          // endQuery();
+          connection.end();
           break;
       }
     });
@@ -77,16 +78,17 @@ function startQuery() {
 
 function employeesAll() {
   let query =
-    "SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name FROM employee e JOIN role r ON r.id = e.role_id JOIN department d ON d.id = r.department_id;";
+    "SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name department, CONCAT(mgr.first_name,' ', mgr.last_name) manager FROM employee e LEFT OUTER JOIN role r ON r.id = e.role_id LEFT OUTER JOIN department d ON d.id = r.department_id LEFT OUTER JOIN employee mgr ON mgr.id = e.manager_id;";
   connection.query(query, function (err, res) {
     console.table(res);
     startQuery();
   });
 }
 
+//Need to request from user which department that they want to see then display it.  Need to change prompt to input then dynamically search for the name.  Reason for this is when new departments are created the input needs to match the values given.
 function employeesDept() {
   let query =
-    "SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name FROM employee e JOIN role r ON r.id = e.role_id JOIN department d ON d.id = r.department_id;";
+    "SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name department, CONCAT(mgr.first_name,' ', mgr.last_name) manager FROM employee e LEFT OUTER JOIN role r ON r.id = e.role_id LEFT OUTER JOIN department d ON d.id = r.department_id LEFT OUTER JOIN employee mgr ON mgr.id = e.manager_id;";
   connection.query(query, function (err, res) {
     console.table(res);
     startQuery();
@@ -95,7 +97,7 @@ function employeesDept() {
 
 function employeesManager() {
   let query =
-    "SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name FROM employee e JOIN role r ON r.id = e.role_id JOIN department d ON d.id = r.department_id;";
+    "SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name department, CONCAT(mgr.first_name,' ', mgr.last_name) manager FROM employee e LEFT OUTER JOIN role r ON r.id = e.role_id LEFT OUTER JOIN department d ON d.id = r.department_id LEFT OUTER JOIN employee mgr ON mgr.id = e.manager_id;";
   connection.query(query, function (err, res) {
     console.table(res);
     startQuery();
