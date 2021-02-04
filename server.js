@@ -88,9 +88,12 @@ async function employeesAll() {
 }
 
 async function employeesDept() {
-  const employees = await DB.findAllDepartments();
-  console.table(employees);
-  startQuery();
+  let query = "SELECT name department FROM department;";
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    startQuery();
+  });
 }
 
 async function employeesRoles() {
