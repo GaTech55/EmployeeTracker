@@ -1,15 +1,19 @@
-const DB = require("./db");
 const mysql = require("mysql");
-const { prompt } = require("inquirer");
+const util = require("util");
 const inquirer = require("inquirer");
-const connection = require("../EmployeeTracker/db/connection");
 const figlet = require("figlet");
-const cTable = require("console.table");
-const { endConnection } = require("./db");
+const { endConnection } = require("process");
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  port: process.env.PORT || 3306,
+  user: "root",
+  password: "Keisha5510",
+  database: "employee_tracker_db",
+});
 
 connection.connect(function (err) {
   if (err) throw err;
-  // runSearch();
 });
 
 figlet("Employee Manager", function (err, data) {
