@@ -37,7 +37,6 @@ async function startQuery() {
         "View All Employees",
         "View All Department",
         "View All Roles",
-        "View employees by Manager",
         "Add Employee",
         "Remove Employee",
         "Update Employee Role",
@@ -56,9 +55,6 @@ async function startQuery() {
           break;
         case "View All Roles":
           return employeesRoles();
-          break;
-        case "View employees by Manager":
-          return employeesManager();
           break;
         case "Add Employee":
           return employeeAdd();
@@ -109,16 +105,6 @@ async function employeesRoles() {
   });
 }
 
-async function employeesManager() {
-  let query =
-    "SELECT employee.manager_id, manager.first_name, manager.last_name, employee.id AS 'Employee ID', employee.first_name, employee.last_name 'Employee' FROM employee INNER JOIN employee manager ON employee.manager_id = manager.id WHERE employee.manager_id IS NOT NULL ORDER BY 'Manager Name';";
-  connection.query(query, (err, res) => {
-    if (err) throw err;
-    console.table(res);
-    startQuery();
-  });
-}
-
 async function employeeAdd() {
   inquirer
     .prompt([
@@ -146,15 +132,11 @@ async function employeeAdd() {
     .then((response) => {
       console.log(response);
 
-      this.connection.query(
-        `INSERT INTO employee SET ?`,
-        response,
-        (err, res) => {
-          if (err) throw err;
-          console.log("Successfully added");
-          startQuery();
-        }
-      );
+      connection.query(`INSERT INTO employee SET ?`, response, (err, res) => {
+        if (err) throw err;
+        console.log("New employee successfully added");
+        startQuery();
+      });
     });
 }
 
