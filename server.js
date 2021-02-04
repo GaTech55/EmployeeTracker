@@ -28,56 +28,63 @@ figlet("Employee Manager", function (err, data) {
 });
 
 async function startQuery() {
-  inquirer.prompt({
-    name: "choice",
-    type: "list",
-    message: "What would you like to do?",
-    choices: [
-      "View All Employees",
-      "View All Department",
-      "View All Roles",
-      "Add Employee",
-      "Remove Employee",
-      "Update Employee Role",
-      "Update Employee Manager",
-      "End of Query",
-    ],
-  });
-
-  // .then(function (answer) {
-  switch (choice) {
-    case "View All Employees":
-      return employeesAll();
-      break;
-    case "View All Department":
-      return employeesDept();
-      break;
-    case "View All Roles":
-      return employeesRoles();
-      break;
-    case "Add Employee":
-      return employeeAdd();
-      break;
-    case "Remove Employee":
-      return employeeRemove();
-      break;
-    case "Update Employee Role":
-      return employeeUpdateRole();
-      break;
-    case "Update Employee Manager":
-      return employeeUpdateManager();
-      break;
-    case "End of Query":
-      // endQuery();
-      return endConnections();
-      break;
-  }
+  inquirer
+    .prompt({
+      name: "choice",
+      type: "list",
+      message: "What would you like to do?",
+      choices: [
+        "View All Employees",
+        "View All Department",
+        "View All Roles",
+        "Add Employee",
+        "Remove Employee",
+        "Update Employee Role",
+        "Update Employee Manager",
+        "End of Query",
+      ],
+    })
+    .then(function (answer) {
+      console.log(answer);
+      switch (answer.choice) {
+        case "View All Employees":
+          return employeesAll();
+          break;
+        case "View All Department":
+          return employeesDept();
+          break;
+        case "View All Roles":
+          return employeesRoles();
+          break;
+        case "Add Employee":
+          return employeeAdd();
+          break;
+        case "Remove Employee":
+          return employeeRemove();
+          break;
+        case "Update Employee Role":
+          return employeeUpdateRole();
+          break;
+        case "Update Employee Manager":
+          return employeeUpdateManager();
+          break;
+        case "End of Query":
+          // endQuery();
+          return endConnections();
+      }
+    });
 }
 
+startQuery();
+
 async function employeesAll() {
-  const employees = await DB.findAllEmployees();
-  console.table(employees);
-  startQuery();
+  let query =
+    "SELECT e.id, e.first_name, e.last_name, r.title, r.salary,d.name department, CONCAT(mgr.first_name,' ', mgr.last_name) manager FROM employee e LEFT OUTER JOIN role r ON r.id = e.role_id LEFT OUTER JOIN department d ON d.id = r.department_id LEFT OUTER JOIN employee mgr ON mgr.id = e.manager_id;";
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    startQuery();
+  });
 }
 
 async function employeesDept() {
