@@ -1,4 +1,5 @@
 const connection = require("./connection");
+const inquirer = require("inquirer");
 
 class DB {
   constructor(connection) {
@@ -28,6 +29,28 @@ class DB {
   }
   // Create a new employee
   createEmployee(employee) {
+    inquirer.prompt([
+      {
+        type: "input",
+        message: "What is the employee's first name?",
+        name: "first_name",
+      },
+      {
+        type: "input",
+        message: "What is the employee's last name?",
+        name: "last_name",
+      },
+      {
+        type: "input",
+        message: "What is the employee's id number",
+        name: "role_id",
+      },
+      {
+        type: "input",
+        message: "What is the employee's manager id",
+        name: "manager_id",
+      },
+    ]);
     return this.connection.query("INSERT INTO employee SET ?", employee);
   }
   // Remove an employee with the given id

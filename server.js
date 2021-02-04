@@ -1,9 +1,16 @@
 const DB = require("./db");
 const mysql = require("mysql");
 const { prompt } = require("inquirer");
+const inquirer = require("inquirer");
+const connection = require("../EmployeeTracker/db/connection");
 const figlet = require("figlet");
 const cTable = require("console.table");
 const { endConnection } = require("./db");
+
+connection.connect(function (err) {
+  if (err) throw err;
+  // runSearch();
+});
 
 figlet("Employee Manager", function (err, data) {
   if (err) {
@@ -80,6 +87,51 @@ async function employeesRoles() {
   const employees = await DB.findAllRoles();
   console.table(employees);
   startQuery();
+}
+
+// async function employeeAdd(employee) {
+//   const employees = await DB.createEmployee(employee);
+//   console.table(employees);
+//   startQuery();
+// }
+
+async function employeeAdd() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the employee's first name?",
+        name: "first_name",
+      },
+      {
+        type: "input",
+        message: "What is the employee's last name?",
+        name: "last_name",
+      },
+      {
+        type: "input",
+        message: "What is the employee's id number",
+        name: "role_id",
+      },
+      {
+        type: "input",
+        message: "What is the employee's manager id",
+        name: "manager_id",
+      },
+    ])
+    .then((response) => {
+      console.log(response);
+
+      this.connection.query(
+        `INSERT INTO employee SET ?`,
+        response,
+        (err, res) => {
+          if (err) throw err;
+          console.log("Successfully added");
+          startQuery();
+        }
+      );
+    });
 }
 
 async function endConnections() {
