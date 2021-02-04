@@ -12,6 +12,7 @@ const connection = mysql.createConnection({
   database: "employee_tracker_db",
 });
 
+// updating connection information to server.js file
 connection.connect(function (err) {
   if (err) throw err;
 });
@@ -27,23 +28,21 @@ figlet("Employee Manager", function (err, data) {
 });
 
 async function startQuery() {
-  const { choice } = await prompt([
-    {
-      name: "choice",
-      type: "list",
-      message: "What would you like to do?",
-      choices: [
-        "View All Employees",
-        "View All Department",
-        "View All Roles",
-        "Add Employee",
-        "Remove Employee",
-        "Update Employee Role",
-        "Update Employee Manager",
-        "End of Query",
-      ],
-    },
-  ]);
+  inquirer.prompt({
+    name: "choice",
+    type: "list",
+    message: "What would you like to do?",
+    choices: [
+      "View All Employees",
+      "View All Department",
+      "View All Roles",
+      "Add Employee",
+      "Remove Employee",
+      "Update Employee Role",
+      "Update Employee Manager",
+      "End of Query",
+    ],
+  });
 
   // .then(function (answer) {
   switch (choice) {
