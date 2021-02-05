@@ -41,6 +41,7 @@ async function startQuery() {
         "Add Employee",
         "Add Employee Role",
         "Add Department",
+        "Update Employee Role",
         "End of Query",
       ],
     })
@@ -64,6 +65,9 @@ async function startQuery() {
           break;
         case "Add Department":
           return employeeAddDept();
+          break;
+        case "Update Employee Role":
+          return employeeUpdateRole();
           break;
         case "End of Query":
           exit();
@@ -179,6 +183,37 @@ async function employeeAddDept() {
       connection.query(`INSERT INTO department SET ?`, response, (err) => {
         if (err) throw err;
         console.log("Successfully added the department!");
+        startQuery();
+      });
+    });
+}
+
+//Not sure of how to do this one
+async function employeeUpdateRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the role's title?",
+        name: "title",
+      },
+      {
+        type: "input",
+        message: "What is the role's salary?",
+        name: "salary",
+      },
+      {
+        type: "input",
+        message: "What is the role's department id?",
+        name: "department_id",
+      },
+    ])
+    .then((response) => {
+      console.log(response);
+
+      connection.query(`INSERT INTO role SET ?`, response, (err) => {
+        if (err) throw err;
+        console.log("Successfully added the role!");
         startQuery();
       });
     });
