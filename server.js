@@ -40,7 +40,7 @@ async function startQuery() {
         "View All Roles",
         "Add Employee",
         "Add Employee Role",
-        "Update Employee Manager",
+        "Add Department",
         "End of Query",
       ],
     })
@@ -62,8 +62,8 @@ async function startQuery() {
         case "Add Employee Role":
           return employeeAddRole();
           break;
-        case "Update Employee Manager":
-          return employeeUpdateManager();
+        case "Add Department":
+          return employeeAddDept();
           break;
         case "End of Query":
           exit();
@@ -159,6 +159,26 @@ async function employeeAddRole() {
       connection.query(`INSERT INTO role SET ?`, response, (err) => {
         if (err) throw err;
         console.log("Successfully added the role!");
+        startQuery();
+      });
+    });
+}
+
+async function employeeAddDept() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the name of the new department?",
+        name: "name",
+      },
+    ])
+    .then((response) => {
+      console.log(response);
+
+      connection.query(`INSERT INTO department SET ?`, response, (err) => {
+        if (err) throw err;
+        console.log("Successfully added the department!");
         startQuery();
       });
     });
